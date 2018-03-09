@@ -85,6 +85,14 @@ public class AVLTree   {
         }
     }
 
+    public void leftChange(Node node){
+        if (node==null||node.leftChild==null){
+            return;
+        }
+        Node left=node.leftChild;
+        left.leftChild=node;
+        node.leftChild=left.rightChild;
+    }
     private void checkHeight(Node node,int side){
         int rightHeight,leftHeight;
         Node target=root;
@@ -142,11 +150,11 @@ public class AVLTree   {
         while (!elements.isEmpty()){
             Node temp=elements.pollLast();
             if (lines[temp.height]==null){
-                lines[temp.height]=getInterval(height+temp.right)+ temp.val;
+                lines[temp.height]=getInterval(height,temp.height,temp.right)+ temp.val;
                 rightCounts[temp.height]=temp.right;
             }
             else {
-                lines[temp.height]=lines[temp.height]+getInterval(temp.right-rightCounts[temp.height])+ temp.val;
+                lines[temp.height]=lines[temp.height]+getInterval(height,temp.height,temp.right-rightCounts[temp.height])+ temp.val;
             }
         }
         String result="";
@@ -156,22 +164,21 @@ public class AVLTree   {
         return result;
     }
 
-    String getInterval(int number){
-        if (number<=0){
-            return "";
-        }else {
-            StringBuilder sb=new StringBuilder();
-            for (int i=1;i<=number;i++){
-                sb.append("     ");
-            }
-            return sb.toString();
+    String getInterval(int totakHeight,int height,int right){
+        int oughtWidth=0;
+        int i=1;
+        for (;i<=totakHeight;i=i<<1){
+            oughtWidth+=i;
         }
+        oughtWidth*=2;
+        System.out.println(oughtWidth+""+i);
+        return "";
     }
 
 
     public static void main(String[] args) {
         AVLTree avlTree=new AVLTree();
-        avlTree.init(new int[]{1,7,6,8,12,55,9});
+        avlTree.init(new int[]{10,12,11,13,7,5,9,4,6,8,3});
         System.out.println(avlTree);
     }
 
